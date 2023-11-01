@@ -1,15 +1,14 @@
 const UserController = require('./controllers/UserController');
-const ProductController = require('./controllers/ProductController');
 
 module.exports = [
     {
-        pathname: '/users',
+        endpoint: '/users',
         method: 'GET',
         handler: UserController.listUsers
     },
     {
-        pathname: '/products',
+        endpoint: '/users/:id',
         method: 'GET',
-        handler: ProductController.listProducts
+        handler: UserController.getUserById
     }
 ]
