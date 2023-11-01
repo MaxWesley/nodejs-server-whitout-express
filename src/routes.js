@@ -3,12 +3,12 @@ const ProductController = require('./controllers/ProductController');
 
 module.exports = [
     {
-        endpoint: '/users',
+        pathname: '/users',
         method: 'GET',
         handler: UserController.listUsers
     },
     {
-        endpoint: '/products',
+        pathname: '/products',
         method: 'GET',
         handler: ProductController.listProducts
     }
