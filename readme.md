@@ -18,3 +18,8 @@
 - [x] user module 'url' para realizar um parse o request.url, para ter acesso ao query params, passando true no segundo argumento;
 - [x] atribuir ao request.query o parsedUrl.query para ter acesso ao query dentro dos controller;
 - [x] adicionar ordenação na lista de usuários, passando order no query param;
+### Parte 3 - refactor
+- [x] desestruture URL do modulo 'url';
+- [x] crie uma instancia dessa Class URL e passa a url como argumento do tipo string;
+- [x] converta o **iterable** searchParams para um objeto para ter acesso aos queryParams usando Object.fromEntries();
+- [x] envie o novo objetos para request.query;
