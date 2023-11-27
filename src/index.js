@@ -1,39 +1,44 @@
-const http = require('http');
-const { URL } = require('url');
+const http = require("http");
+const { URL } = require("url");
 
-const routes = require('./routes');
+const bodyParser = require("./helpers/bodyParser");
+const routes = require("./routes");
 
 const server = http.createServer((request, response) => {
-    const parsedUrl = new URL(`http://localhost:3000${request.url}`);
+  const parsedUrl = new URL(`http://localhost:3000${request.url}`);
 
-    let { pathname } = parsedUrl;
-    let id = null;
-    
-    const splitEndpoint = pathname.split('/').filter(Boolean);
+  let { pathname } = parsedUrl;
+  let id = null;
 
-    if(splitEndpoint.length > 1) {
-        pathname = `/${splitEndpoint[0]}/:id`;
-        id = splitEndpoint[1];
-    }
+  const splitEndpoint = pathname.split("/").filter(Boolean);
 
-    const route = routes.find(route => (
-        route.endpoint === pathname && request.method === route.method
-    ));
+  if (splitEndpoint.length > 1) {
+    pathname = `/${splitEndpoint[0]}/:id`;
+    id = splitEndpoint[1];
+  }
 
-    if (route) {
-        request.query = Object.fromEntries(parsedUrl.searchParams);
-        request.params = { id };
+  const route = routes.find(
+    (route) => route.endpoint === pathname && request.method === route.method
+  );
 
-        response.send = (statusCode, body) => {
-            response.writeHead(statusCode, { 'Content-Type': 'application/json' });
-            response.end(JSON.stringify(body));
-        }
+  if (route) {
+    request.query = Object.fromEntries(parsedUrl.searchParams);
+    request.params = { id };
 
-        route.handler(request, response);
+    response.send = (statusCode, body) => {
+      response.writeHead(statusCode, { "Content-Type": "application/json" });
+      response.end(JSON.stringify(body));
+    };
+
+    if (["POST", "PUT", "PATCH"].includes(request.method)) {
+      bodyParser(request, () => route.handler(request, response));
     } else {
-        response.writeHead(404, { 'Content-Type': 'text/html' })
-        response.end(`Cannot ${request.method} ${request.url}`)
+      route.handler(request, response);
     }
+  } else {
+    response.writeHead(404, { "Content-Type": "text/html" });
+    response.end(`Cannot ${request.method} ${request.url}`);
+  }
 });
 
-server.listen(3000, () => console.log('Iniciou servidor!'));
+server.listen(3000, () => console.log("Iniciou servidor!"));
