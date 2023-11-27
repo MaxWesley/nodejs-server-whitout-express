@@ -1,14 +1,14 @@
 module.exports = [
     {
         id: 1,
-        nome: 'Max Wesley'
+        name: 'Max Wesley'
     },
     {
         id: 2,
-        nome: 'Juliana'
+        name: 'Juliana'
     },
     {
         id: 3,
-        nome: 'José'
+        name: 'José'
     },
 ]
